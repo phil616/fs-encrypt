@@ -4,7 +4,7 @@
 
 ## 功能特性
 
-1.  **全目录加密**：递归处理多层文件夹和文件，对文件名和文件内容进行全量加密。
+1.  **全目录/单文件加密**：支持递归加密整个目录，也支持加密单个文件。
 2.  **高压缩率**：采用 Zstandard (zstd) 算法的最高压缩级别，尽可能节省存储空间。
 3.  **高安全性**：
     *   **加密算法**：使用 AES-256-GCM 进行认证加密，确保数据的机密性和完整性。
@@ -63,11 +63,19 @@
 ./fs-encrypt encrypt target_dir output.enc
 ```
 
+### 加密单个文件
+
+将 `file.txt` 加密并保存为 `file.enc`：
+
+```bash
+./fs-encrypt encrypt-item file.txt file.enc
+```
+
 程序会提示输入密码并确认。
 
 ### 解密文件
 
-将 `output.enc` 解密并还原到 `restore_dir` 目录：
+将 `output.enc`（或 `file.enc`）解密并还原到 `restore_dir` 目录：
 
 ```bash
 ./fs-encrypt decrypt output.enc restore_dir

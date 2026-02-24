@@ -7,10 +7,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var encryptCmd = &cobra.Command{
-	Use:   "encrypt [source_dir] [output_file]",
-	Short: "Encrypt a directory",
-	Long:  `Encrypts a directory recursively with Zstd compression (max level) and AES-256-GCM encryption.`,
+var encryptItemCmd = &cobra.Command{
+	Use:   "encrypt-item [source_file] [output_file]",
+	Short: "Encrypt a single file",
+	Long:  `Encrypts a single file using the same format as directory encryption.`,
 	Args:  cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		src := args[0]
@@ -19,10 +19,10 @@ var encryptCmd = &cobra.Command{
 		// Check if source exists
 		info, err := os.Stat(src)
 		if os.IsNotExist(err) {
-			return fmt.Errorf("source directory does not exist: %s", src)
+			return fmt.Errorf("source file does not exist: %s", src)
 		}
-		if !info.IsDir() {
-			return fmt.Errorf("source must be a directory: %s", src)
+		if info.IsDir() {
+			return fmt.Errorf("source must be a file: %s", src)
 		}
 
 		// Get password securely
@@ -49,5 +49,5 @@ var encryptCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(encryptCmd)
+	rootCmd.AddCommand(encryptItemCmd)
 }
